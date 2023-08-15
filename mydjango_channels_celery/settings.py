@@ -31,6 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'daphne',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -39,6 +40,11 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     
     'mainapp',
+    'django_celery_results',
+    'django_celery_beat',
+    'notifiy_app',
+    'channels',
+
 ]
 
 MIDDLEWARE = [
@@ -64,12 +70,15 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'notifiy_app.context_processors.notifications_context',
             ],
         },
     },
 ]
 
 WSGI_APPLICATION = 'mydjango_channels_celery.wsgi.application'
+ASGI_APPLICATION = 'mydjango_channels_celery.asgi.application'
+
 
 
 # Database
@@ -107,7 +116,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Kolkata'
 
 USE_I18N = True
 
@@ -126,6 +135,14 @@ STATIC_URL = '/static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            "hosts": [('127.0.0.1', 6379)],  # Replace with your Redis configuration
+        },
+    },
+}
 
 
 #CELERY_SETTINGS 
